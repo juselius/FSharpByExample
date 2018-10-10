@@ -1,8 +1,10 @@
-﻿// Learn more about F# at http://fsharp.org
+﻿namespace FsPoem
 
-open System
+module Main =
+    open Poetry
 
-[<EntryPoint>]
-let main argv =
-    printfn "Hello World from F#!"
-    0 // return an integer exit code
+    [<EntryPoint>]
+    let main argv =
+        printfn "Hello World from F#!"
+        Poetry.run ()
+        0 
