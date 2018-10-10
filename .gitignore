@@ -243,4 +243,4 @@ ModelManifest.xml
 wwwroot/
 dist/
 paket-files/
-
+.ionide/
