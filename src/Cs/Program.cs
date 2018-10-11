@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace CsHanoi {
+namespace CsExamples {
     
 class Program {
 
     static void Main(string[] args) {
-        TowerOfHanoi T = new TowerOfHanoi();
+        Hanoi T = new Hanoi();
         string cnumdiscs;
 
         Console.Write("Enter the number of discs: ");
@@ -13,37 +13,9 @@ class Program {
         cnumdiscs = Console.ReadLine();
         T.numdiscs = Convert.ToInt32(cnumdiscs);
         T.movetower(T.numdiscs, 1, 3, 2);
+
+        FizzBuzz F = new FizzBuzz(50);
+        F.fizzBuzz();
     }
 }
-
-class TowerOfHanoi {
-    int m_numdiscs;
-
-    public TowerOfHanoi() {
-        numdiscs = 0;
-    }
-
-    public TowerOfHanoi(int newval) {
-        numdiscs = newval;
-    }
-
-    public int numdiscs {
-        get {
-            return m_numdiscs;
-        }
-        set {
-            if (value > 0) m_numdiscs = value;
-        }
-    }
-
-    public void movetower(int n, int from, int to, int other) {
-        if (n > 0) {
-            movetower(n - 1, from, other, to);
-            Console.WriteLine("Move disk {0} from tower {1} to tower {2}", 
-                n, from, to);
-            movetower(n - 1, other, to, from);
-        }
-    }
-}
-
 }
