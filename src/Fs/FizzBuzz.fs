@@ -36,5 +36,5 @@ module FizzBuzz =
             | Number -> false
             | _ -> true
         )
-        // |> List.iter (fun x -> Console.Write (x.Show ()))
+        // |> List.iter (fun x -> Console.WriteLine (x.Show ()))
         |> List.iter (show >> Console.WriteLine)
