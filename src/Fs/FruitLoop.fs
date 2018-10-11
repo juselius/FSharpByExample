@@ -15,34 +15,35 @@ module FruitLoop =
         | Error of 'E
 
     let compare x y = 
-        if x >= 0 && y > 0.0 then 
+        if x = int y then 
             Some { apples = x; oranges = y } 
         else 
             None 
 
     let compare' x y = 
-        if x >= 0 && y > 0.0 then 
+        if float x = y then 
             Ok { apples = x; oranges = y } 
         else 
             Error "can't compare apples and oranges" 
 
     let compare'' x y = 
-        if x >= 0 && y > 0.0 then 
+        if x = int (ceil y)  then 
             { apples = x; oranges = y } 
         else 
-            failwith "can't compare apples and oranges" 
+            failwith "potatoe tomatoe" 
 
 
     let run () =
         let a = 
             match compare 0 42.0 with
             | Some x -> string x
-            | None -> "that doesn't work"
+            | None -> "that didn't work!"
         let b = 
             let cmp = compare' 1
             match cmp -1.0 with
             | Ok x -> string x
             | Error e -> e
         printfn "%s\n%s" a b
-        compare'' -1 42.0 |> string
-
+        try
+            compare'' -1 42.0 |> string
+        with e -> e.Message

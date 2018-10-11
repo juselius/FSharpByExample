@@ -8,6 +8,7 @@
     <Compile Include="Poem.fs" />
     <Compile Include="Hanoi.fs" />
     <Compile Include="FruitLoop.fs" />
+    <Compile Include="FizzBuzz.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />

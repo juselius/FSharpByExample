@@ -22,7 +22,7 @@ module FizzBuzz =
         | FizzBuzz x -> "FIZZBUZZ: " + string x
         | Number -> ""
 
-    let fizzbuzz n = 
+    let fizzBuzz n = 
         [0..n] 
         |> List.map (fun x ->
             match x with
@@ -37,4 +37,4 @@ module FizzBuzz =
             | _ -> true
         )
         // |> List.iter (fun x -> Console.Write (x.Show ()))
-        |> List.iter (show >> Console.Write)
+        |> List.iter (show >> Console.WriteLine)
