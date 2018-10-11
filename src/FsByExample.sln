@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsHanoi", "CsHanoi\CsHanoi.csproj", "{1D48AAB5-BD65-484A-A166-8817380CBE5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cs", "Cs\CsExamples.csproj", "{1D48AAB5-BD65-484A-A166-8817380CBE5D}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FsHanoi", "FsHanoi\FsHanoi.fsproj", "{776FA67F-8347-49F0-847D-672D1989471F}"
-EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FsPoem", "FsPoem\FsPoem.fsproj", "{46206AEA-29A1-4AEE-9A5D-5607BA5AD631}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fs", "Fs\FsExamples.fsproj", "{776FA67F-8347-49F0-847D-672D1989471F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,17 +44,5 @@ Global
 		{776FA67F-8347-49F0-847D-672D1989471F}.Release|x64.Build.0 = Release|Any CPU
 		{776FA67F-8347-49F0-847D-672D1989471F}.Release|x86.ActiveCfg = Release|Any CPU
 		{776FA67F-8347-49F0-847D-672D1989471F}.Release|x86.Build.0 = Release|Any CPU
-		{46206AEA-29A1-4AEE-9A5D-5607BA5AD631}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{46206AEA-29A1-4AEE-9A5D-5607BA5AD631}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{46206AEA-29A1-4AEE-9A5D-5607BA5AD631}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{46206AEA-29A1-4AEE-9A5D-5607BA5AD631}.Debug|x64.Build.0 = Debug|Any CPU
-		{46206AEA-29A1-4AEE-9A5D-5607BA5AD631}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{46206AEA-29A1-4AEE-9A5D-5607BA5AD631}.Debug|x86.Build.0 = Debug|Any CPU
-		{46206AEA-29A1-4AEE-9A5D-5607BA5AD631}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{46206AEA-29A1-4AEE-9A5D-5607BA5AD631}.Release|Any CPU.Build.0 = Release|Any CPU
-		{46206AEA-29A1-4AEE-9A5D-5607BA5AD631}.Release|x64.ActiveCfg = Release|Any CPU
-		{46206AEA-29A1-4AEE-9A5D-5607BA5AD631}.Release|x64.Build.0 = Release|Any CPU
-		{46206AEA-29A1-4AEE-9A5D-5607BA5AD631}.Release|x86.ActiveCfg = Release|Any CPU
-		{46206AEA-29A1-4AEE-9A5D-5607BA5AD631}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
