@@ -1,10 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Library.fs" />
+    <Compile Include="Poem.fs" />
+    <Compile Include="Hanoi.fs" />
+    <Compile Include="FruitLoop.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

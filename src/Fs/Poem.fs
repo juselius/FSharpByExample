@@ -1,4 +1,4 @@
-namespace FsPoem
+namespace FsExamples
 
 module Poetry =
     open System.IO
