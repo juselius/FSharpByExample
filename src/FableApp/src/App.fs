@@ -1,19 +1,26 @@
 module FableApp
 
 open Fable.Core
-open Fable.Core.JsInterop
-open Fable.Import
+open Fable.Helpers.React
+open Fable.Helpers.React.Props
+open Elmish
+open Elmish.React
 
-let init() =
-    let canvas = Browser.document.getElementsByTagName_canvas().[0]
-    canvas.width <- 1000.
-    canvas.height <- 800.
-    let ctx = canvas.getContext_2d()
-    // The (!^) operator checks and casts a value to an Erased Union type
-    // See http://fable.io/docs/interacting.html#Erase-attribute
-    ctx.fillStyle <- !^"rgb(200,0,0)"
-    ctx.fillRect (10., 10., 55., 50.)
-    ctx.fillStyle <- !^"rgba(0, 0, 200, 0.5)"
-    ctx.fillRect (30., 30., 55., 50.)
 
-init()
+type Model = unit
+
+type Msg = unit
+
+let init () : Model = ()
+
+let update (msg : Msg) (model : Model) : Model = () 
+
+let view (model : Model) (dispatch : Msg -> unit) =
+    div [] [
+        h1 [ Props.Class "foo" ] [ str "Hello world!" ]
+        p [] [ str "goodbye!"]
+    ]
+
+Program.mkSimple init update view
+|> Program.withReact "elmish-app"
+|> Program.run

@@ -11,6 +11,8 @@ group Fable
     clitool dotnet-fable
     nuget Fable.Core
     nuget Fable.Import.Browser
+    nuget Fable.Elmish
+    nuget Fable.Elmish.React
 
 group netcorebuild
     storage:none

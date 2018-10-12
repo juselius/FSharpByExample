@@ -1,2 +1,6 @@
-Fable.Core
-Fable.Import.Browser
+group Fable
+    dotnet-fable
+    Fable.Core
+    Fable.Import.Browser
+    Fable.Elmish
+    Fable.Elmish.React
