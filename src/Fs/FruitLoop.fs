@@ -4,7 +4,7 @@ module FruitLoop =
     type Fruit = {
         apples : int
         oranges : float
-    }
+        }
 
     type Option<'T> =
         | Some of 'T
@@ -31,7 +31,6 @@ module FruitLoop =
             { apples = x; oranges = y } 
         else 
             failwith "potatoe tomatoe" 
-
 
     let run () =
         let a = 

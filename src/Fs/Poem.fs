@@ -8,9 +8,9 @@ module Poetry =
     let unlines (sl : string list) = 
         sl |> List.fold (fun a s -> a + s + "\n") "" 
     
-    let sortTextLines s = unlines (List.sort (lines s)) 
-    let sortTextLines' s = s |> lines |> List.sort |> unlines
-    let sortTextLines'' = lines >> List.sort >> unlines
+    let sortLines'' s = unlines (List.sort (lines s)) 
+    let sortLines''' s = s |> lines |> List.sort |> unlines
+    let sortLines'''' = lines >> List.sort >> unlines
 
     let sortLines s = s |> lines |> List.sort |> unlines
     let revLines s = s |> lines |> List.rev |> unlines
