@@ -4,6 +4,14 @@ group Default
 
     nuget FSharp.Core
 
+group Fable
+    source https://api.nuget.org/v3/index.json
+    storage:none
+
+    clitool dotnet-fable
+    nuget Fable.Core
+    nuget Fable.Import.Browser
+
 group netcorebuild
     storage:none
     source https://api.nuget.org/v3/index.json
