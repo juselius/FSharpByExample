@@ -1,4 +1,4 @@
-﻿namespace FsExamples
+﻿namespace Day1
 
 open System
 
@@ -22,16 +22,16 @@ module FizzBuzz =
         | FizzBuzz x -> "FIZZBUZZ: " + string x
         | Number -> ""
 
-    let fizzBuzz n = 
+    let fizzBuzz n =
         let fizzy x =
             match x with
             | y when y % 15 = 0 -> FizzBuzz (string y)
             | y when y % 5 = 0 -> Buzz (float y)
             | y when y % 3 = 0 -> Fizz y
             | _ -> Number
-        [0..n] 
+        [0..n]
         |> List.map fizzy
-        |> List.filter (fun x -> 
+        |> List.filter (fun x ->
             match x with
             | Number -> false
             | _ -> true

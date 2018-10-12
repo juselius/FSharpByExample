@@ -1,4 +1,4 @@
-﻿namespace Live
+﻿namespace Day2
 
 module Main =
 
