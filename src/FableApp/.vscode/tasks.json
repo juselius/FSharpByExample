@@ -4,8 +4,8 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "command": "yarn",
-            "args": ["start"],
+            "command": "dotnet",
+            "args": ["fable webpack-dev-server", "--", "--config src/FableApp/webpack.config.js"],
             "type": "shell",
             "label": "Start",
             "group": "build",

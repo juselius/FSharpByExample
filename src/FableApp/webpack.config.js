@@ -1,75 +1,104 @@
 var path = require("path");
 var webpack = require("webpack");
+var MinifyPlugin = require("terser-webpack-plugin");
 
 function resolve(filePath) {
     return path.join(__dirname, filePath)
 }
 
-var babelOptions = {
-    presets: [
-        ["@babel/preset-env", {
-            "targets": {
-                "browsers": ["last 2 versions"]
-            },
-            "modules": false
-        }]
-    ],
-    plugins: ["@babel/plugin-transform-runtime"]
-};
+var CONFIG = {
+    fsharpEntry: {
+        "app": [
+            "whatwg-fetch",
+            "@babel/polyfill",
+            resolve("./FableApp.fsproj")
+        ]
+    },
+    devServerProxy: {
+        '/api/*': {
+            target: 'http://localhost:' + (process.env.SUAVE_FABLE_PORT || "8085"),
+            changeOrigin: true
+        }
+    },
+    historyApiFallback: {
+        index: resolve("./index.html")
+    },
+    contentBase: resolve("./public"),
+    // Use babel-preset-env to generate JS compatible with most-used browsers.
+    // More info at https://github.com/babel/babel/blob/master/packages/babel-preset-env/README.md
+    babel: {
+        presets: [
+            ["@babel/preset-env", {
+                "targets": {
+                    "browsers": ["last 2 versions"]
+                },
+                "modules": false,
+                "useBuiltIns": "usage",
+            }]
+        ],
+        plugins: ["@babel/plugin-transform-runtime"]
+    }
+}
 
 var isProduction = process.argv.indexOf("-p") >= 0;
 console.log("Bundling for " + (isProduction ? "production" : "development") + "...");
-var port = process.env.SUAVE_FABLE_PORT || "8085";
 
 module.exports = {
-    devtool: "source-map",
-    mode: "development",
-    entry: "./src/FableApp.fsproj",
+    entry : CONFIG.fsharpEntry,
     output: {
-        path: path.join(__dirname, "./src/public/js"),
+        path: resolve('./public/js'),
         publicPath: "/js",
-        filename: "bundle.js",
+        filename: "[name].js"
     },
-    devServer: {
-        proxy: {
-            '/api/*': {
-                target: 'http://localhost:' + port,
-                changeOrigin: true
+    mode: isProduction ? "production" : "development",
+    devtool: isProduction ? undefined : "source-map",
+    resolve: {
+        symlinks: false
+    },
+    optimization: {
+        // Split the code coming from npm packages into a different file.
+        // 3rd party dependencies change less often, let the browser cache them.
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /node_modules/,
+                    name: "vendors",
+                    chunks: "all"
+                }
             }
         },
-        contentBase: "./src/public",
-        port: 8080,
+        minimizer: isProduction ? [new MinifyPlugin()] : []
+    },
+    // DEVELOPMENT
+    //      - HotModuleReplacementPlugin: Enables hot reloading when code changes without refreshing
+    plugins: isProduction ? [] : [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NamedModulesPlugin()
+    ],
+    // Configuration for webpack-dev-server
+    devServer: {
+        proxy: CONFIG.devServerProxy,
         hot: true,
-        inline: true
+        inline: true,
+        historyApiFallback: CONFIG.historyApiFallback,
+        contentBase: CONFIG.contentBase
     },
-    resolve: {
-        symlinks: false,
-        modules: [resolve("node_modules/")]
-    },
+    // - fable-loader: transforms F# into JS
+    // - babel-loader: transforms JS to old syntax (compatible with old browsers)
     module: {
         rules: [
             {
                 test: /\.fs(x|proj)?$/,
-                use: {
-                    loader: "fable-loader",
-                    options: {
-                        babel: babelOptions,
-                        define: isProduction ? [] : ["DEBUG"]
-                    }
-                }
+                use: "fable-loader"
             },
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
-                    options: babelOptions
+                    options: CONFIG.babel
                 },
             }
         ]
-    },
-    plugins: isProduction ? [] : [
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NamedModulesPlugin()
-    ]
-}
+    }
+};
