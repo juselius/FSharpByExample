@@ -95,24 +95,30 @@ let private updateEntry (msg : EditEntryMsg) (entry : Todo) =
     | UpdateDue d -> { entry with due = d}
 
 let startEdit id model =
-    let entry = Map.find id model.entries 
-    let model' = { model with editForm = Some entry }
-    model', Cmd.none
+    match Map.tryFind id model.entries with
+    | Some entry -> 
+        let model' = { model with editForm = Some entry }
+        model', Cmd.none
+    | None -> model, notifyErr <| "TaskId not found, " + string id
 
 let handleEditEntry (msg : UpdateEntryMsg) (model : Model) =
-    let entry = model.editForm.Value
-    let entry' = updateEntry msg entry
-    let model' = { model with editForm = Some entry' }
-    model', Cmd.none
+    match model.editForm with
+    | Some entry -> 
+        let entry' = updateEntry msg entry
+        let model' = { model with editForm = Some entry' }
+        model', Cmd.none
+    | None -> model, notifyErr "Error in error message"
 
 let saveEdit model =
-    let entry' = model.editForm.Value // match
-    let model' = {
-        model with 
-            entries = Map.add entry'.taskId entry' model.entries
-            editForm = None 
-        }
-    model', Cmd.none
+    match model.editForm with
+    Some entry -> 
+        let model' = {
+            model with 
+                entries = Map.add entry.taskId entry model.entries
+                editForm = None 
+            }
+        model', Cmd.none
+    | None -> model, notifyErr "Error in error message"
 
 let cancelEdit model =
     let model' = { model with editForm = None }

@@ -1,5 +1,6 @@
 module Toodeloo.View
 
+open System
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fulma
@@ -32,7 +33,8 @@ let newEntryForm (model : Model) (dispatch : Msg -> unit) =
         Field.div [] [ Label.label [] [ str "Due" ] ]
         Control.div [] [ Input.date [
           Input.OnChange (fun e -> 
-            dispatch' (UpdateDue (System.DateTime.Parse e.Value)))
+            dispatch' (UpdateDue (DateTime.Parse e.Value)))
+          model.createForm.due.ToString "yyyy-MM-dd" |> Input.Value
           ] 
         ]
         Field.div [] [ Label.label [] [ str "" ] ]
@@ -47,6 +49,17 @@ let clickToEdit id txt (dispatch : Msg -> unit) =
         OnDoubleClick (fun _ -> dispatch <| StartEdit id)
     ] [ str txt ]
 
+let styleIt (t : Todo) = 
+    let c =
+        match t with
+        | _ when t.due.Date <= DateTime.Now.Date -> "pink" 
+        | _ when t.priority >= 10 && t.priority < 50 -> "green"
+        | _ when t.priority >= 50 && t.priority < 100 -> "yellow"
+        | _ when t.priority >= 100  -> "red"
+        | _ -> ""
+    Style [ BackgroundColor c ] 
+
+
 let taskListView (model : Model) (dispatch : Msg -> unit) =
     let editable id txt editor =
         match model.editForm with
@@ -58,9 +71,14 @@ let taskListView (model : Model) (dispatch : Msg -> unit) =
             Input.OnChange (fun e -> 
                 dispatch <| EditEntry (UpdateTask e.Value))
         ]] 
-    let due t = 
-        editable t.taskId (string t.due) [ Input.date [ 
-            Input.DefaultValue (string t.due)
+    let due model t = 
+        let duedate =
+            match model.editForm with 
+            | Some x -> x.due
+            | None ->  t.due
+            |> fun x -> x.ToString "yyyy-MM-dd"
+        editable t.taskId duedate [ Input.date [ 
+            duedate |> Input.Value
             Input.OnChange (fun e -> 
                 dispatch <| EditEntry (
                     UpdateDue <| System.DateTime.Parse e.Value)
@@ -103,10 +121,10 @@ let taskListView (model : Model) (dispatch : Msg -> unit) =
             for p in model.entries do
                 let t = p.Value
                 yield tr [] [
-                    td [] [ str (string t.taskId) ]
+                    td [ styleIt t ] [ str (string t.taskId) ]
                     pri t
                     task t
-                    due t
+                    due model t 
                     button t
                 ]
           ]
