@@ -2,28 +2,18 @@ module Toodeloo.View
 
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
-open Fable.PowerPack.Fetch
 open Fulma
 open Toodeloo.Model
 
-let navbar =
-    Navbar.navbar [ Navbar.Color IsDark ] [
-        Navbar.Item.div [ ] [
-            Heading.h3
-                [ Heading.Modifiers [ Modifier.TextColor IsWhite ] ]
-                [ str "Toodeloo" ]
-        ]
-    ]
-
-let button txt onClick =
+let private button txt onClick =
     Button.button [
         Button.IsFullWidth
         Button.Color IsPrimary
         Button.OnClick onClick
     ] [ str txt ]
 
-let formAddTask (model : Model) (dispatch : Msg -> unit) =
-    let dispatch' = CreateFormMsg >> dispatch
+let newEntryForm (model : Model) (dispatch : Msg -> unit) =
+    let dispatch' = NewEntry >> dispatch
     p [] [
         Field.div [] [ Label.label [] [ str "Task" ] ]
         Control.div [] [ Input.text [
@@ -47,7 +37,7 @@ let formAddTask (model : Model) (dispatch : Msg -> unit) =
         ]
         Field.div [] [ Label.label [] [ str "" ] ]
         Control.div [] [ button "Add entry" (fun _ -> 
-            dispatch (Create model.createForm)) ]
+            dispatch (CreateEntry model.createForm)) ]
     ]
 
 // Add a double click event to each editable td
@@ -57,22 +47,22 @@ let clickToEdit id txt (dispatch : Msg -> unit) =
         OnDoubleClick (fun _ -> dispatch <| StartEdit id)
     ] [ str txt ]
 
-let mkEntryTable (model : Model) (dispatch : Msg -> unit) =
+let taskListView (model : Model) (dispatch : Msg -> unit) =
     let editable id txt editor =
-        match model.editing with
-        | Some n when n = id -> td [] editor
+        match model.editForm with
+        | Some n when n.taskId = id -> td [] editor
         | _ -> clickToEdit id txt dispatch
     let task t = 
         editable t.taskId t.task [ Input.text [ 
             Input.DefaultValue t.task
             Input.OnChange (fun e -> 
-                dispatch <| Update (UpdateTask e.Value))
+                dispatch <| EditEntry (UpdateTask e.Value))
         ]] 
     let due t = 
         editable t.taskId (string t.due) [ Input.date [ 
             Input.DefaultValue (string t.due)
             Input.OnChange (fun e -> 
-                dispatch <| Update (
+                dispatch <| EditEntry (
                     UpdateDue <| System.DateTime.Parse e.Value)
                 )
         ]] 
@@ -80,26 +70,31 @@ let mkEntryTable (model : Model) (dispatch : Msg -> unit) =
         editable t.taskId (string t.priority) [ Input.number [ 
             Input.DefaultValue (string t.priority)
             Input.OnChange (fun e -> 
-                dispatch <| Update (UpdatePri <| int e.Value))
+                dispatch <| EditEntry (UpdatePri <| int e.Value))
        ]] 
     let button i =
-        match model.editing with
-        | Some n when n = i.taskId ->
+        match model.editForm with
+        | Some n when n.taskId = i.taskId ->
             td [] [
                 Button.button [
                     Button.Color IsSuccess
                     Button.IsOutlined
                     Button.OnClick (fun _ -> dispatch <| SaveEdit)
                 ] [ str "Save" ]
+                Button.button [
+                    Button.Color IsWarning
+                    Button.IsOutlined
+                    Button.OnClick (fun _ -> dispatch <| CancelEdit)
+                ] [ str "Cancel" ]
             ]
         | _ -> td [] [
             Button.button [
                 Button.Color IsDanger
                 Button.IsOutlined
-                Button.OnClick (fun _ -> dispatch <| Delete i.taskId)
+                Button.OnClick (fun _ -> dispatch <| DeleteEntry i.taskId)
             ] [ str "X" ]
         ]
-    let cols = [ "Id"; "Priority"; "Task"; "Due"; "Delete" ]
+    let cols = [ "Id"; "Priority"; "Task"; "Due"; "" ]
     Table.table [] [
         thead [] [
             for i in cols do yield td [] [str i]
@@ -127,14 +122,39 @@ let errorNotifier (model : Model) (dispatch : Msg -> unit) =
            ]
     | None -> div [] []
 
+let private navbar =
+    Navbar.navbar [ Navbar.Color IsDark ] [
+        Navbar.Item.div [ ] [
+            Heading.h3
+                [ Heading.Modifiers [ Modifier.TextColor IsWhite ] ]
+                [ str "Toodeloo" ]
+        ]
+    ]
+
+let infoPanel model dispatch =
+    Panel.panel [] [
+        Box.box' [ 
+            Props [Style [ BackgroundColor "lightgray"] ] 
+        ] [ str (string model) ]
+        Content.content [] [
+            Button.button [ 
+                Button.Color IsDanger
+                Button.OnClick (fun _ -> 
+                    dispatch (NotifyError "This is an error."))
+            ] [ str "Generate error" ]
+        ]
+    ]
+
 let mainView (model : Model) (dispatch : Msg -> unit) elt =
     div [] [
         navbar
         errorNotifier model dispatch
-        Container.container [] elt
+        Section.section [] [
+            Container.container [ Container.IsFullHD ] elt
+        ]
         Footer.footer [] [
             Content.content [ Content.Modifiers [
                 Modifier.TextAlignment (Screen.All, TextAlignment.Centered) ]
-            ] [ str "May the foo be with yougg" ]
+            ] [ str "May the foo be with you" ]
         ]
     ]
