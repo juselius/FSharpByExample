@@ -172,7 +172,9 @@ let mainView (model : Model) (dispatch : Msg -> unit) elt =
         ]
         Footer.footer [] [
             Content.content [ Content.Modifiers [
-                Modifier.TextAlignment (Screen.All, TextAlignment.Centered) ]
+                Modifier.TextAlignment (Screen.All, TextAlignment.Centered) 
+                Modifier.TextSize (Screen.All, TextSize.Is4) 
+                ]
             ] [ str "May the foo be with you" ]
         ]
     ]
