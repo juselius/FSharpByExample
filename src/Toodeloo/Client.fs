@@ -5,6 +5,8 @@ module Client =
     open Elmish.React
     open Fable.Helpers.React
     open Fable.Helpers.React.Props
+    open Elmish.Debug
+    open Elmish.HMR
     open Fable.PowerPack.Fetch
     open Thoth.Json
     open Fulma
@@ -26,6 +28,8 @@ module Client =
         | DeleteEntry n -> deleteEntry n model 
         | NotifyError err -> { model with errorMsg = Some err }, Cmd.none
         | ClearError -> { model with errorMsg = None }, Cmd.none
+        | ToggleInfoPane -> 
+            { model with showInfoPane = not model.showInfoPane }, Cmd.none
 
     let view model dispatch =
         mainView model dispatch [
@@ -34,10 +38,27 @@ module Client =
                 newEntryForm model dispatch
             ]
             Box.box' [] [ taskListView model dispatch ]
-            infoPanel model dispatch
+            (if model.showInfoPane then
+                div [
+                    Props.OnClick (fun _ -> dispatch ToggleInfoPane)
+                ] [ infoPane model dispatch ]
+            else
+                Button.button [
+                    Button.OnClick (fun _ -> dispatch ToggleInfoPane)
+                    Button.Props [ 
+                        Style [Props.CSSProp.BackgroundColor "orange"] 
+                    ]
+                ] [ str "Developer info" ]
+            )
         ]
 
-
     Program.mkProgram init update view
+#if DEBUG
+    |> Program.withConsoleTrace
+    |> Program.withHMR
+#endif
     |> Program.withReact "elmish-app"
+#if DEBUG
+    |> Program.withDebugger
+#endif
     |> Program.run

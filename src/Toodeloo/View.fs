@@ -52,10 +52,10 @@ let clickToEdit id txt (dispatch : Msg -> unit) =
 let styleIt (t : Todo) = 
     let c =
         match t with
-        | _ when t.due.Date <= DateTime.Now.Date -> "pink" 
-        | _ when t.priority >= 10 && t.priority < 50 -> "green"
-        | _ when t.priority >= 50 && t.priority < 100 -> "yellow"
-        | _ when t.priority >= 100  -> "red"
+        | _ when t.due.Date <= DateTime.Now.Date -> "fuchsia" 
+        | _ when t.priority >= 10 && t.priority < 50 -> "limegreen"
+        | _ when t.priority >= 50 && t.priority < 100 -> "gold"
+        | _ when t.priority >= 100  -> "crimson"
         | _ -> ""
     Style [ BackgroundColor c ] 
 
@@ -149,7 +149,7 @@ let private navbar =
         ]
     ]
 
-let infoPanel model dispatch =
+let infoPane model dispatch =
     Panel.panel [] [
         Box.box' [ 
             Props [Style [ BackgroundColor "lightgray"] ] 
@@ -158,7 +158,7 @@ let infoPanel model dispatch =
             Button.button [ 
                 Button.Color IsDanger
                 Button.OnClick (fun _ -> 
-                    dispatch (NotifyError "This is an error."))
+                    dispatch (NotifyError "Error in error messgae."))
             ] [ str "Generate error" ]
         ]
     ]

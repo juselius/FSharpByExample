@@ -18,6 +18,7 @@ type Model =
       editForm   : Todo option
       errorMsg   : string option
       currentId  : int
+      showInfoPane : bool
     }
 
 // local submodule
@@ -26,7 +27,7 @@ module Defaults =
         { taskId = 0
           priority = 0
           task = ""
-          due = DateTime.Now
+          due = DateTime.Today.AddDays 1.0
         }
 
     let defaultModel = {
@@ -35,6 +36,7 @@ module Defaults =
         errorMsg = None
         editForm = None
         currentId = 0
+        showInfoPane = false
         }
 
 
@@ -58,6 +60,7 @@ type Msg =
 | CancelEdit 
 | NotifyError of string
 | ClearError
+| ToggleInfoPane
 
 let private notifyErr e = Cmd.ofMsg (Msg.NotifyError e)
 
