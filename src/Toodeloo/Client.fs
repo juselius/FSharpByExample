@@ -17,8 +17,8 @@ module Client =
 
     let update (msg : Msg) (model : Model) : Model * Cmd<Msg> = 
         match msg with
-        | CreateEntry n -> createEntry n model 
         | NewEntry msg -> handleNewEntry msg model
+        | SaveEntry n -> saveEntry n model 
         | EditEntry msg -> handleEditEntry msg model 
         | StartEdit id -> startEdit id model 
         | SaveEdit -> saveEdit model

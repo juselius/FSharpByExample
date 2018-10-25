@@ -50,7 +50,7 @@ type EditEntryMsg = UpdateEntryMsg
 
 type Msg =
 | NewEntry of NewEntryMsg
-| CreateEntry of Todo
+| SaveEntry of Todo
 | DeleteEntry of int
 | StartEdit of int
 | EditEntry of EditEntryMsg 
@@ -69,7 +69,7 @@ let handleNewEntry (msg : NewEntryMsg) (model : Model) =
         | UpdateTask y -> { model.createForm with task = y }
     { model with createForm = entry }, Cmd.none
 
-let createEntry (x : Todo) (model : Model) =
+let saveEntry (x : Todo) (model : Model) =
     let newId = model.currentId + 1
     // Example validation, perform any kind of validation here and return
     match x.taskId with

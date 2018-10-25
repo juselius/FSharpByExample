@@ -39,7 +39,7 @@ let newEntryForm (model : Model) (dispatch : Msg -> unit) =
         ]
         Field.div [] [ Label.label [] [ str "" ] ]
         Control.div [] [ button "Add entry" (fun _ -> 
-            dispatch (CreateEntry model.createForm)) ]
+            dispatch (SaveEntry model.createForm)) ]
     ]
 
 // Add a double click event to each editable td
