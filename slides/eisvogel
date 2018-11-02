@@ -1,0 +1,9 @@
+#!/usr/bin/env fish
+
+set input $argv[1]
+set base (basename $input | sed 's/\(.*\)\(\..\+$\)/\1/')
+set tmp (mktemp -d)
+pandoc $input -o $tmp/$base.tex --template eisvogel --listings
+tectonic $tmp/$base.tex -o .
+
+# vim: ft=fish
