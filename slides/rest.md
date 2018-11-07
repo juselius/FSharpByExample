@@ -3,6 +3,7 @@ layout: true
 class: center, middle, inverse
 ---
 # How to rest
+#### (not really REST, but you'll figure it out)
 ## <jonas.juselius@itpartner.no>
 ### https://github.com/juselius
 ### https://twitter.com/copointfree
